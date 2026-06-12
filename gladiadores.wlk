@@ -1,8 +1,15 @@
+import grupos.*
 class Gladiador{
     var vida = 100
 
+    method vida() = vida
+
     method atacar(unGladiador) {
         unGladiador.perderVida(self.poderDeAtaque() - unGladiador.defensa())
+    }
+
+    method curar() {
+        vida = 100
     }
 
     method perderVida(cantidad) {
@@ -17,6 +24,7 @@ class Gladiador{
     method poderDeAtaque()
     method defensa()
     method fuerza()
+    method crearGrupoCon(unGladiador) 
 }
 
 class Mirmillon inherits Gladiador{
@@ -41,6 +49,10 @@ class Mirmillon inherits Gladiador{
     override method defensa() = armadura.defensa(self) + self.destreza()
 
     override method poderDeAtaque() = fuerza + arma.valorDeAtaque()
+
+    override method crearGrupoCon(unGladiador){
+        return new Grupo(nombre = "Mirmillolandia", miembros = #{self, unGladiador})
+    }
 }
 
 class Dimachaeru inherits Gladiador {
@@ -52,4 +64,11 @@ class Dimachaeru inherits Gladiador {
     override method defensa() = destreza / 2
 
     override method poderDeAtaque() = self.fuerza() + armas.sum({arma => arma.valorDeAtaque()})
+
+    override method crearGrupoCon(unGladiador){
+        return new Grupo(
+            miembros = #{unGladiador, self}, 
+            nombre = "D-" + (self.poderDeAtaque() + unGladiador.poderDeAtaque()).toString()
+        )
+    }
 }
